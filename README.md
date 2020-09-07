@@ -6,7 +6,7 @@
       - [TypeScript & integrated into VSCode (IDE)](#typescript--integrated-into-vscode-ide)
       - [GraphQL Endpoint](#graphql-endpoint)
 
-A boutique TypeScript package repository for an Apollo Lambda Server. 💅 Contains the GraphQL schema for the Places to Cry application. Places to Cry is a simple application
+A boutique TypeScript package repository for an Apollo Lambda Server. 💅 Contains the GraphQL schema for the Places to Cry application. Places to Cry is an application for non-robot contributors to pin and write about their favorite places to cry.
 
 ## Starting TypeScript project from scratch
 
@@ -29,6 +29,7 @@ This was not understandable until I read documentation and understood how to use
 - TypeScript (transpiler)
 - Serverless (configured for AWS Lambda deploy and local testing)
 - Docker (configured for local testing)
+- prettier (for linting)
 
 #### TypeScript & integrated into VSCode (IDE)
 
@@ -60,6 +61,7 @@ This was not understandable until I read documentation and understood how to use
 - Must have a GraphQL API
   - I want TypeScript so I don't have to fuss with JavaScript objects and `console.log` everything.
   - So, I want TypeScript types generated from GraphQL so I can think about my user experience first.
+- Contributions (addPost) must be validated with captcha
 - [nice-to-have] pushes to the `master` branch automatically deploy to lambda
 
 After:
@@ -78,7 +80,7 @@ I figured out this repo should contain:
   - This is available via `.env.development` and `docker-compose.yml`
   - Both `.env.development` and `docker-compose.yml` are named based on automatic functions of their respective configuration tools:
     - [serverless-dotenv-plugin](https://www.serverless.com/plugins/serverless-dotenv-plugin) is a plugin that allows access to environment variables based on `NODE_ENV` for anything running in the lambda function (i.e. the Apollo Lambda Server).
-    - `docker-compose.yml` is the default configuration file when running the development `db:*` commands.
+    - `docker-compose.yml` is the default configuration file when running the development `db:*` scripts.
 
 - [x] graphql schema
   - `src/graphql/schema.ts` is the source of truth for the type definitions which will hopefully make this package more dependable and easy to develop.
@@ -87,7 +89,7 @@ I figured out this repo should contain:
 - [x] codegen config to convert graphql schema to type definitions
   - `codegen.yml` is a default configuration file and is used by the script `codegen`. It's really cool! `codegen.yml` will be updated as I become more comfortable with the tool.
 - [ ] ~~serverless config to deploy an aws appsync~~
-  - not going to do this, going to set up API Gateway myself. We'll go down that rabbit hole later but right now we're overwhelmed with docker, codegen, apollo, lambda and haven't even run it all locally yet so resist, bun, resist. 🕳🐇
+  - not going to do this, going to set up API Gateway myself. We'll go down that rabbit hole later. 🕳🐇
 - [ ] logic to fetch connection details to the AWS "production" RDS database
 - [ ] resolvers that talk to the database
   - at this point I become incredibly thankful for typescript
