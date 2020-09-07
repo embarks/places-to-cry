@@ -1,0 +1,28 @@
+service:
+  name: apollo-lambda-typescript
+
+plugins:
+  - serverless-dotenv-plugin
+  - serverless-plugin-typescript
+  - serverless-offline
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  timeout: 15
+  # apiKeys:
+  #   - name: lambdaApolloKey
+  #     value: ${env:APOLLO_LAMBDA_KEY}
+
+functions:
+  graphql:
+    handler: src/handler.graphqlHandler
+    events:
+      - http:
+          private: true
+          path: graphql
+          method: post
+      - http:
+          private: true
+          path: graphql
+          method: get
