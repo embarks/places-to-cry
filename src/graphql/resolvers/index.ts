@@ -1,10 +1,4 @@
-import {
-  Place,
-  Post,
-  PostsQuery,
-  PostType,
-  QueryResolvers,
-} from "../type-defs.generated"
+import { Place, Post, PostType, QueryResolvers } from "../type-defs.generated"
 
 interface IResolvers {
   Query: QueryResolvers
@@ -18,7 +12,7 @@ const resolvers: IResolvers = {
         id: "123",
         place: {} as Place,
         time: new Date(),
-        type: {} as PostType,
+        type: PostType.AdHoc,
         where: "my house",
       }
       return [post]
