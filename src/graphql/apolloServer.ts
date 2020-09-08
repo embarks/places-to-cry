@@ -11,9 +11,12 @@ const IS_DEV = !NODE_ENV || !["production"].includes(NODE_ENV)
 const apolloServer = new ApolloServer({
   // todo [esb] provide auth scope like so
   // context: (integrationContext) => ({
-  // AuthScope: AuthScope(integrationContext)
+  // AuthScope: new AuthScope(integrationContext)
   // })
   introspection: IS_DEV,
+  playground: {
+    endpoint: "/dev/graphql",
+  },
   resolvers: resolvers as any,
   typeDefs: schema,
   // subscriptions: {},

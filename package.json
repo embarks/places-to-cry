@@ -10,8 +10,8 @@
     "codegen": "graphql-codegen",
     "db:up": "docker-compose up -d",
     "db:down": "docker-compose down",
-    "knex:dev:migrate": "NODE_ENV=development knex migrate:latest",
-    "knex:dev:rollback": "NODE_ENV=development knex migrate:rollback"
+    "migrate:dev": "NODE_ENV=development knex migrate:latest",
+    "rollback:dev": "NODE_ENV=development knex migrate:rollback"
   },
   "dependencies": {
     "apollo-server-lambda": "^2.16.1",
