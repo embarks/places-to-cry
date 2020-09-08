@@ -1,5 +1,5 @@
 import { ApolloServer } from "apollo-server-lambda"
-import resolvers from "./resolvers"
+import { resolvers } from "./resolvers"
 import schema from "./schema"
 // import AuthScope from './Captcha'
 // https://developers.google.com/recaptcha/docs/verify

@@ -1,10 +1,19 @@
 service:
   name: apollo-lambda-typescript
 
+# this custom is a fix for serverless offline hot reloading issue
+# https://github.com/dherault/serverless-offline/issues/1081
+# https://github.com/serverless-heaven/serverless-webpack/issues/566
+# https://github.com/dherault/serverless-offline/issues/1083
+# https://github.com/dherault/serverless-offline/issues/931
+custom:
+  serverless-offline:
+    useChildProcesses: true
+
 plugins:
   - serverless-dotenv-plugin
-  - serverless-plugin-typescript
   - serverless-offline
+  - serverless-plugin-typescript
 
 provider:
   name: aws
@@ -19,10 +28,12 @@ functions:
     handler: src/handler.graphqlHandler
     events:
       - http:
-          private: true
           path: graphql
           method: post
+          cors: true
+          allowCredentials: false
       - http:
-          private: true
           path: graphql
           method: get
+          cors: true
+          allowCredentials: false
