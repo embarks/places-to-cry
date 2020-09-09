@@ -6,20 +6,21 @@ const dotEnvConfig = {
 }
 
 require("dotenv").config(dotEnvConfig)
-
+const postgres = {
+  client: "pg",
+  connection: {
+    host: process.env.DB_HOST,
+    user: process.env.POSTGRES_USER,
+    password: process.env.POSTGRES_PASSWORD,
+    database: process.env.POSTGRES_DB,
+    port: process.env.POSTGRES_PORT,
+  },
+}
 module.exports = {
   development: {
-    client: "pg",
-    connection: {
-      host: process.env.DB_HOST,
-      user: process.env.POSTGRES_USER,
-      password: process.env.POSTGRES_PASSWORD,
-      database: process.env.POSTGRES_DB,
-      port: process.env.POSTGRES_PORT,
-    },
+    ...postgres,
   },
-  // production: {
-  //   client: 'pg',
-  //   connection: process.env.DATABASE_URL,
-  // },
+  production: {
+    ...postgres,
+  },
 }
