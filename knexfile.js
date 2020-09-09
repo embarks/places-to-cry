@@ -1,11 +1,7 @@
 require("pg")
 
-const path = require("path")
-const dotEnvConfig = {
-  path: path.resolve(process.cwd(), `.env.${process.env.NODE_ENV}`),
-}
+require("dotenv").config()
 
-require("dotenv").config(dotEnvConfig)
 const postgres = {
   client: "pg",
   connection: {
