@@ -79,7 +79,7 @@ I figured out this repo should contain:
 
   - This is available via `.env.development` and `docker-compose.yml`
   - Both `.env.development` and `docker-compose.yml` are named based on automatic functions of their respective configuration tools:
-    - [serverless-dotenv-plugin](https://www.serverless.com/plugins/serverless-dotenv-plugin) is a plugin that allows access to environment variables based on `NODE_ENV` for anything running in the lambda function (i.e. the Apollo Lambda Server).
+    - [serverless-dotenv-plugin](https://www.serverless.com/plugins/serverless-dotenv-plugin) is a plugin that allows access to environment variables in serverless.yml based on `NODE_ENV`.
     - `docker-compose.yml` is the default configuration file when running the development `db:*` scripts.
 
 - [x] graphql schema
