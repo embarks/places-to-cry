@@ -12,7 +12,9 @@
     "db:up": "docker-compose up -d",
     "db:down": "docker-compose down",
     "migrate:dev": "NODE_ENV=development knex migrate:latest",
-    "rollback:dev": "NODE_ENV=development knex migrate:rollback"
+    "rollback:dev": "NODE_ENV=development knex migrate:rollback",
+    "migrate:stage": "NODE_ENV=production knex migrate:latest",
+    "rollback:stage": "NODE_ENV=production knex migrate:rollback"
   },
   "dependencies": {
     "apollo-server-lambda": "^2.16.1",
