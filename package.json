@@ -8,6 +8,7 @@
     "dev": "serverless offline",
     "lint": "tslint -p tsconfig.json -c tslint.json ./src/**/*.ts",
     "build:watch": "tsc -w",
+    "build": "tsc",
     "codegen": "graphql-codegen",
     "db:up": "docker-compose up -d",
     "db:down": "docker-compose down",
