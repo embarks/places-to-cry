@@ -13,10 +13,8 @@ const apolloServer = new ApolloServer({
   // context: (integrationContext) => ({
   // AuthScope: new AuthScope(integrationContext)
   // })
-  introspection: IS_DEV,
-  playground: {
-    endpoint: "/dev/graphql",
-  },
+  introspection: true,
+  playground: true,
   resolvers: resolvers as any,
   typeDefs: schema,
   // subscriptions: {},
