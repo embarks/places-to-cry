@@ -13,7 +13,7 @@ interface IResolvers {
 const resolvers: IResolvers = {
   Mutation: {},
   Query: {
-    posts: (root, args, ctx): Post[] => {
+    posts: (root, args, { dataSources }): Post[] => {
       const post = {
         GPSVerified: false,
         content: "that was ffffucked",
