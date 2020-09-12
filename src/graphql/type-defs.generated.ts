@@ -15,18 +15,22 @@ export type Scalars = {
 
 export type Query = {
   __typename?: 'Query';
-  posts: Array<Maybe<Post>>;
-  places: Array<Maybe<Place>>;
+  posts: PostsPage;
+  searchPlaces: PlacesPage;
 };
 
 
 export type QueryPostsArgs = {
   sortBy?: Maybe<PostSortField>;
   sortOrder?: Maybe<SortOrder>;
+  perPage?: Scalars['Int'];
+  currentPage?: Maybe<Scalars['Int']>;
+  isFromStart?: Maybe<Scalars['Boolean']>;
+  isLengthAware?: Maybe<Scalars['Boolean']>;
 };
 
 
-export type QueryPlacesArgs = {
+export type QuerySearchPlacesArgs = {
   searchText?: Maybe<Scalars['String']>;
   searchRadius?: Maybe<SearchRadiusInput>;
 };
@@ -49,6 +53,28 @@ export enum SortOrder {
   Asc = 'ASC',
   Desc = 'DESC'
 }
+
+export type PageInfo = {
+  __typename?: 'PageInfo';
+  total?: Maybe<Scalars['Int']>;
+  lastPage?: Maybe<Scalars['Int']>;
+  currentPage: Scalars['Int'];
+  perPage: Scalars['Int'];
+  from: Scalars['Int'];
+  to: Scalars['Int'];
+};
+
+export type PostsPage = {
+  __typename?: 'PostsPage';
+  page: Array<Maybe<Post>>;
+  pageInfo: PageInfo;
+};
+
+export type PlacesPage = {
+  __typename?: 'PlacesPage';
+  page: Array<Maybe<Place>>;
+  pageInfo: PageInfo;
+};
 
 export type Post = Node & {
   __typename?: 'Post';
@@ -124,14 +150,20 @@ export type PostsQueryVariables = Exact<{
 
 export type PostsQuery = (
   { __typename?: 'Query' }
-  & { posts: Array<Maybe<(
-    { __typename?: 'Post' }
-    & Pick<Post, 'id' | 'content' | 'type' | 'GPSVerified'>
-    & { place: (
-      { __typename?: 'Place' }
-      & Pick<Place, 'id' | 'where' | 'type' | 'Latitude' | 'Longitude'>
+  & { posts: (
+    { __typename?: 'PostsPage' }
+    & { page: Array<Maybe<(
+      { __typename?: 'Post' }
+      & Pick<Post, 'id' | 'content' | 'type' | 'GPSVerified'>
+      & { place: (
+        { __typename?: 'Place' }
+        & Pick<Place, 'id' | 'where' | 'type' | 'Latitude' | 'Longitude'>
+      ) }
+    )>>, pageInfo: (
+      { __typename?: 'PageInfo' }
+      & Pick<PageInfo, 'total'>
     ) }
-  )>> }
+  ) }
 );
 
 
@@ -214,15 +246,18 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 export type ResolversTypes = {
   Date: ResolverTypeWrapper<Scalars['Date']>;
   Query: ResolverTypeWrapper<{}>;
+  Int: ResolverTypeWrapper<Scalars['Int']>;
+  Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   String: ResolverTypeWrapper<Scalars['String']>;
   Mutation: ResolverTypeWrapper<{}>;
   PostSortField: PostSortField;
   SortOrder: SortOrder;
+  PageInfo: ResolverTypeWrapper<PageInfo>;
+  PostsPage: ResolverTypeWrapper<PostsPage>;
+  PlacesPage: ResolverTypeWrapper<PlacesPage>;
   Post: ResolverTypeWrapper<Post>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
-  Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   SearchRadiusInput: SearchRadiusInput;
-  Int: ResolverTypeWrapper<Scalars['Int']>;
   CoordinatesInput: CoordinatesInput;
   Float: ResolverTypeWrapper<Scalars['Float']>;
   Place: ResolverTypeWrapper<Place>;
@@ -238,13 +273,16 @@ export type ResolversTypes = {
 export type ResolversParentTypes = {
   Date: Scalars['Date'];
   Query: {};
+  Int: Scalars['Int'];
+  Boolean: Scalars['Boolean'];
   String: Scalars['String'];
   Mutation: {};
+  PageInfo: PageInfo;
+  PostsPage: PostsPage;
+  PlacesPage: PlacesPage;
   Post: Post;
   ID: Scalars['ID'];
-  Boolean: Scalars['Boolean'];
   SearchRadiusInput: SearchRadiusInput;
-  Int: Scalars['Int'];
   CoordinatesInput: CoordinatesInput;
   Float: Scalars['Float'];
   Place: Place;
@@ -258,12 +296,34 @@ export interface DateScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes
 }
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
-  posts?: Resolver<Array<Maybe<ResolversTypes['Post']>>, ParentType, ContextType, RequireFields<QueryPostsArgs, never>>;
-  places?: Resolver<Array<Maybe<ResolversTypes['Place']>>, ParentType, ContextType, RequireFields<QueryPlacesArgs, never>>;
+  posts?: Resolver<ResolversTypes['PostsPage'], ParentType, ContextType, RequireFields<QueryPostsArgs, 'perPage' | 'currentPage'>>;
+  searchPlaces?: Resolver<ResolversTypes['PlacesPage'], ParentType, ContextType, RequireFields<QuerySearchPlacesArgs, never>>;
 };
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   addPost?: Resolver<ResolversTypes['Post'], ParentType, ContextType, RequireFields<MutationAddPostArgs, 'input'>>;
+};
+
+export type PageInfoResolvers<ContextType = any, ParentType extends ResolversParentTypes['PageInfo'] = ResolversParentTypes['PageInfo']> = {
+  total?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  lastPage?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  currentPage?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  perPage?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  from?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  to?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType>;
+};
+
+export type PostsPageResolvers<ContextType = any, ParentType extends ResolversParentTypes['PostsPage'] = ResolversParentTypes['PostsPage']> = {
+  page?: Resolver<Array<Maybe<ResolversTypes['Post']>>, ParentType, ContextType>;
+  pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType>;
+};
+
+export type PlacesPageResolvers<ContextType = any, ParentType extends ResolversParentTypes['PlacesPage'] = ResolversParentTypes['PlacesPage']> = {
+  page?: Resolver<Array<Maybe<ResolversTypes['Place']>>, ParentType, ContextType>;
+  pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 };
 
 export type PostResolvers<ContextType = any, ParentType extends ResolversParentTypes['Post'] = ResolversParentTypes['Post']> = {
@@ -300,6 +360,9 @@ export type Resolvers<ContextType = any> = {
   Date?: GraphQLScalarType;
   Query?: QueryResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
+  PageInfo?: PageInfoResolvers<ContextType>;
+  PostsPage?: PostsPageResolvers<ContextType>;
+  PlacesPage?: PlacesPageResolvers<ContextType>;
   Post?: PostResolvers<ContextType>;
   Place?: PlaceResolvers<ContextType>;
   Node?: NodeResolvers<ContextType>;

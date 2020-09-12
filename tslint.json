@@ -1,7 +1,8 @@
 {
   "extends": ["tslint:recommended"],
   "rules": {
-    "semicolon": [true, "never"]
+    "semicolon": [true, "never"],
+    "trailing-comma": false
   },
   "linterOptions": {
     "exclude": ["src/graphql/*.generated.ts"]

@@ -1,7 +1,7 @@
 import {
   MutationResolvers,
   Place,
-  Post,
+  PostsPage,
   PostType,
   QueryResolvers,
 } from "../type-defs.generated"
@@ -9,11 +9,13 @@ import {
 interface IResolvers {
   Query: QueryResolvers
   Mutation: MutationResolvers
+  Node: { __resolveType: () => any }
+  Coordinates: { __resolveType: () => any }
 }
 const resolvers: IResolvers = {
   Mutation: {},
   Query: {
-    posts: (root, args, { dataSources }): Post[] => {
+    posts: (root, args, { dataSources }): PostsPage => {
       const post = {
         GPSVerified: false,
         content: "that was ffffucked",
@@ -24,8 +26,23 @@ const resolvers: IResolvers = {
         time: new Date(),
         type: PostType.AdHoc,
       }
-      return [post]
+      return {
+        page: [post],
+        pageInfo: {
+          currentPage: 1,
+          from: 1,
+          perPage: 10,
+          to: 10,
+        },
+      }
     },
+  },
+  /*tslint:disable: object-literal-sort-keys */
+  Node: {
+    __resolveType: () => null,
+  },
+  Coordinates: {
+    __resolveType: () => null,
   },
 }
 

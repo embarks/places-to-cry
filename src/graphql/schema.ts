@@ -8,9 +8,19 @@ const schema = gql`
   }
 
   type Query {
-    posts(sortBy: PostSortField, sortOrder: SortOrder): [Post]!
+    posts(
+      sortBy: PostSortField
+      sortOrder: SortOrder
+      perPage: Int! = 10
+      currentPage: Int = 1
+      isFromStart: Boolean
+      isLengthAware: Boolean
+    ): PostsPage!
 
-    places(searchText: String, searchRadius: SearchRadiusInput): [Place]!
+    searchPlaces(
+      searchText: String
+      searchRadius: SearchRadiusInput
+    ): PlacesPage!
   }
 
   type Mutation {
@@ -24,6 +34,25 @@ const schema = gql`
   enum SortOrder {
     ASC
     DESC
+  }
+
+  type PageInfo {
+    total: Int
+    lastPage: Int
+    currentPage: Int!
+    perPage: Int!
+    from: Int!
+    to: Int!
+  }
+
+  type PostsPage {
+    page: [Post]!
+    pageInfo: PageInfo!
+  }
+
+  type PlacesPage {
+    page: [Place]!
+    pageInfo: PageInfo!
   }
 
   type Post implements Node {
