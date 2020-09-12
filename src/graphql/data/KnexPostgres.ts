@@ -1,8 +1,9 @@
 import Knex from "knex"
-
+import { attachPaginate } from "knex-paginate"
 import Config from "../../../config"
 
 const Database = Config.postgres
+
 /**
  * Initialize a new Postgres provider
  */
@@ -18,6 +19,8 @@ export async function create() {
       user: Database.user,
     },
   })
+
+  attachPaginate()
 
   // Verify the connection before proceeding
   try {
