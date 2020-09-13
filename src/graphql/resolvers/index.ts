@@ -1,10 +1,8 @@
 import {
   MutationResolvers,
-  Place,
   Post,
   PostInput,
   PostsPage,
-  PostType,
   QueryResolvers,
 } from "../type-defs.generated"
 
@@ -27,26 +25,9 @@ const resolvers: IResolvers = {
     },
   },
   Query: {
-    posts: (root, args, { dataSources }): PostsPage => {
-      const post = {
-        GPSVerified: false,
-        content: "that was ffffucked",
-        id: "123",
-        place: {
-          where: "my house",
-        } as Place,
-        time: new Date(),
-        type: PostType.AdHoc,
-      }
-      return {
-        page: [post],
-        pageInfo: {
-          currentPage: 1,
-          from: 1,
-          perPage: 10,
-          to: 10,
-        },
-      }
+    posts: async (root, args, { dataSources }): Promise<PostsPage> => {
+      const page = await dataSources.PostsAPI.getPosts(args)
+      return page
     },
   },
   /*tslint:disable: object-literal-sort-keys */

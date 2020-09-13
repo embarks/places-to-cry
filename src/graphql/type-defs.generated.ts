@@ -16,7 +16,6 @@ export type Scalars = {
 export type Query = {
   __typename?: 'Query';
   posts: PostsPage;
-  searchPlaces: PlacesPage;
 };
 
 
@@ -27,11 +26,6 @@ export type QueryPostsArgs = {
   currentPage?: Maybe<Scalars['Int']>;
   isFromStart?: Maybe<Scalars['Boolean']>;
   isLengthAware?: Maybe<Scalars['Boolean']>;
-};
-
-
-export type QuerySearchPlacesArgs = {
-  searchText?: Maybe<Scalars['String']>;
   searchRadius?: Maybe<SearchRadiusInput>;
 };
 
@@ -72,7 +66,7 @@ export type PostsPage = {
 
 export type PlacesPage = {
   __typename?: 'PlacesPage';
-  page: Array<Maybe<Place>>;
+  posts: Array<Maybe<Post>>;
   pageInfo: PageInfo;
 };
 
@@ -141,30 +135,6 @@ export enum PlaceUserInputType {
   MapboxCoordinates = 'MAPBOX_COORDINATES',
   Raw = 'RAW'
 }
-
-export type PostsQueryVariables = Exact<{
-  sortOrder?: Maybe<SortOrder>;
-  sortBy?: Maybe<PostSortField>;
-}>;
-
-
-export type PostsQuery = (
-  { __typename?: 'Query' }
-  & { posts: (
-    { __typename?: 'PostsPage' }
-    & { page: Array<Maybe<(
-      { __typename?: 'Post' }
-      & Pick<Post, 'id' | 'content' | 'type' | 'GPSVerified'>
-      & { place: (
-        { __typename?: 'Place' }
-        & Pick<Place, 'id' | 'where' | 'type' | 'Latitude' | 'Longitude'>
-      ) }
-    )>>, pageInfo: (
-      { __typename?: 'PageInfo' }
-      & Pick<PageInfo, 'total'>
-    ) }
-  ) }
-);
 
 
 
@@ -248,7 +218,6 @@ export type ResolversTypes = {
   Query: ResolverTypeWrapper<{}>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
-  String: ResolverTypeWrapper<Scalars['String']>;
   Mutation: ResolverTypeWrapper<{}>;
   PostSortField: PostSortField;
   SortOrder: SortOrder;
@@ -257,6 +226,7 @@ export type ResolversTypes = {
   PlacesPage: ResolverTypeWrapper<PlacesPage>;
   Post: ResolverTypeWrapper<Post>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
+  String: ResolverTypeWrapper<Scalars['String']>;
   SearchRadiusInput: SearchRadiusInput;
   CoordinatesInput: CoordinatesInput;
   Float: ResolverTypeWrapper<Scalars['Float']>;
@@ -275,13 +245,13 @@ export type ResolversParentTypes = {
   Query: {};
   Int: Scalars['Int'];
   Boolean: Scalars['Boolean'];
-  String: Scalars['String'];
   Mutation: {};
   PageInfo: PageInfo;
   PostsPage: PostsPage;
   PlacesPage: PlacesPage;
   Post: Post;
   ID: Scalars['ID'];
+  String: Scalars['String'];
   SearchRadiusInput: SearchRadiusInput;
   CoordinatesInput: CoordinatesInput;
   Float: Scalars['Float'];
@@ -296,8 +266,7 @@ export interface DateScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes
 }
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
-  posts?: Resolver<ResolversTypes['PostsPage'], ParentType, ContextType, RequireFields<QueryPostsArgs, 'perPage' | 'currentPage'>>;
-  searchPlaces?: Resolver<ResolversTypes['PlacesPage'], ParentType, ContextType, RequireFields<QuerySearchPlacesArgs, never>>;
+  posts?: Resolver<ResolversTypes['PostsPage'], ParentType, ContextType, RequireFields<QueryPostsArgs, 'sortBy' | 'sortOrder' | 'perPage' | 'currentPage'>>;
 };
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
@@ -321,7 +290,7 @@ export type PostsPageResolvers<ContextType = any, ParentType extends ResolversPa
 };
 
 export type PlacesPageResolvers<ContextType = any, ParentType extends ResolversParentTypes['PlacesPage'] = ResolversParentTypes['PlacesPage']> = {
-  page?: Resolver<Array<Maybe<ResolversTypes['Place']>>, ParentType, ContextType>;
+  posts?: Resolver<Array<Maybe<ResolversTypes['Post']>>, ParentType, ContextType>;
   pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 };

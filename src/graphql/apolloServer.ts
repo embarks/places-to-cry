@@ -16,20 +16,17 @@ export default async function createHandler() {
     // context: (integrationContext) => {
     //   const { event, context } = integrationContext
     // todo [esb] provide auth scope like so
-    // return {
-    // AuthScope: new AuthScope(integrationContext)
-    // }
+    //   return {
+    //     AuthScope: new AuthScope(integrationContext)
+    //   }
     // },
-    dataSources: () => {
-      return {
-        PostsAPI: new Posts({ store }),
-      }
-    },
+    dataSources: () => ({
+      PostsAPI: new Posts({ store }),
+    }),
     introspection: true,
     playground: true,
     resolvers: resolvers as any,
     typeDefs: schema,
-    // subscriptions: {},
   })
   const handler = await apolloServer.createHandler()
   return handler

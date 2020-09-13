@@ -10,18 +10,14 @@ const schema = gql`
 
   type Query {
     posts(
-      sortBy: PostSortField
-      sortOrder: SortOrder
+      sortBy: PostSortField = time
+      sortOrder: SortOrder = DESC
       perPage: Int! = 10
       currentPage: Int = 1
       isFromStart: Boolean
       isLengthAware: Boolean
-    ): PostsPage!
-
-    searchPlaces(
-      searchText: String
       searchRadius: SearchRadiusInput
-    ): PlacesPage!
+    ): PostsPage!
   }
 
   type Mutation {
@@ -52,7 +48,7 @@ const schema = gql`
   }
 
   type PlacesPage {
-    page: [Place]!
+    posts: [Post]!
     pageInfo: PageInfo!
   }
 
