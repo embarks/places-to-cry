@@ -1,8 +1,7 @@
 import { ApolloServer } from "apollo-server-lambda"
 
 import { create } from "./data/KnexPostgres"
-// import Places from "./data/Places"
-// import Posts from "./data/Posts"
+import Posts from "./data/Posts"
 import { resolvers } from "./resolvers"
 import schema from "./schema"
 
@@ -11,7 +10,8 @@ import schema from "./schema"
 
 export default async function createHandler() {
   // create a connection once, not for every request
-  const db = await create()
+  const store = await create()
+
   const apolloServer = new ApolloServer({
     // context: (integrationContext) => {
     //   const { event, context } = integrationContext
@@ -22,8 +22,7 @@ export default async function createHandler() {
     // },
     dataSources: () => {
       return {
-        // places: Places({ store }),
-        // posts: Posts({ store }),
+        PostsAPI: new Posts({ store }),
       }
     },
     introspection: true,

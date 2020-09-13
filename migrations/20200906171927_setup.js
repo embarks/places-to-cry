@@ -1,7 +1,8 @@
 exports.up = function (knex) {
   return knex.schema
+    .raw('CREATE EXTENSION IF NOT EXISTS "uuid-ossp"')
     .createTable("places", function (table) {
-      table.uuid("id").primary()
+      table.uuid("id").defaultTo(knex.raw("uuid_generate_v4()")).primary()
 
       table.float("Latitude").nullable()
 
@@ -10,11 +11,9 @@ exports.up = function (knex) {
       table.string("where").notNullable()
 
       table.enu("type", ["MAPBOX_SEARCH_RESULT", "MAPBOX_COORDINATES", "RAW"])
-
-      table.datetime("time").notNullable()
     })
     .createTable("posts", function (table) {
-      table.uuid("id").primary()
+      table.uuid("id").defaultTo(knex.raw("uuid_generate_v4()")).primary()
 
       table.timestamp("time").notNullable()
 

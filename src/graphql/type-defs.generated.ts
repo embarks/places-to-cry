@@ -37,7 +37,7 @@ export type QuerySearchPlacesArgs = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  addPost: Post;
+  addPost?: Maybe<Post>;
 };
 
 
@@ -113,7 +113,7 @@ export type PostInput = {
   Longitude?: Maybe<Scalars['Float']>;
   time: Scalars['Date'];
   content: Scalars['String'];
-  whereHow: PlaceUserInputType;
+  inputType: PlaceUserInputType;
   where: Scalars['String'];
 };
 
@@ -301,7 +301,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
 };
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
-  addPost?: Resolver<ResolversTypes['Post'], ParentType, ContextType, RequireFields<MutationAddPostArgs, 'input'>>;
+  addPost?: Resolver<Maybe<ResolversTypes['Post']>, ParentType, ContextType, RequireFields<MutationAddPostArgs, 'input'>>;
 };
 
 export type PageInfoResolvers<ContextType = any, ParentType extends ResolversParentTypes['PageInfo'] = ResolversParentTypes['PageInfo']> = {

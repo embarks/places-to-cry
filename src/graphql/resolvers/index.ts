@@ -1,6 +1,8 @@
 import {
   MutationResolvers,
   Place,
+  Post,
+  PostInput,
   PostsPage,
   PostType,
   QueryResolvers,
@@ -12,8 +14,18 @@ interface IResolvers {
   Node: { __resolveType: () => any }
   Coordinates: { __resolveType: () => any }
 }
+
 const resolvers: IResolvers = {
-  Mutation: {},
+  Mutation: {
+    addPost: async (
+      root,
+      { input }: { input: PostInput },
+      { dataSources }
+    ): Promise<Post | null> => {
+      const post: Post = await dataSources.PostsAPI.createPost(input)
+      return post
+    },
+  },
   Query: {
     posts: (root, args, { dataSources }): PostsPage => {
       const post = {

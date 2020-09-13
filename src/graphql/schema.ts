@@ -5,6 +5,7 @@ const schema = gql`
 
   schema {
     query: Query
+    mutation: Mutation
   }
 
   type Query {
@@ -24,7 +25,7 @@ const schema = gql`
   }
 
   type Mutation {
-    addPost(input: PostInput!): Post!
+    addPost(input: PostInput!): Post
   }
 
   enum PostSortField {
@@ -94,7 +95,7 @@ const schema = gql`
     Longitude: Float
     time: Date!
     content: String!
-    whereHow: PlaceUserInputType!
+    inputType: PlaceUserInputType!
     where: String!
   }
 
